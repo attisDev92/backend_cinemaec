@@ -5,13 +5,14 @@ const infoMiddleware = require('./middlewares/infoRequest.middleware')
 
 const moviesRouter = require('./routes/movies')
 
+require('./database/db')
+
 const app = express()
 
 app.use(morgan(':method :url :status :response-time ms'))
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
-
 app.use(infoMiddleware.requestLogger)
 
 if (process.env.NODE_ENV === 'test') {
