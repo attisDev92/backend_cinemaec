@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_ENV=test jest --runInBand",
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write"
   },
   "author": "AttisDev92",
   "license": "ISC",
@@ -19,15 +21,16 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.2",
+    "mongoose-unique-validator": "^5.0.1",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.8.0",
     "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.9.0",
     "nodemon": "^3.1.4",
-    "prettier": "^3.3.3"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "globalTeardown": "./tests/teardown.js"
+    "prettier": "^3.3.3",
+    "supertest": "^7.0.0"
   }
 }

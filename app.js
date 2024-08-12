@@ -3,6 +3,8 @@ const cors = require('cors')
 const morgan = require('morgan')
 const infoMiddleware = require('./middlewares/infoRequest.middleware')
 
+const moviesRouter = require('./routes/movies')
+
 const app = express()
 
 app.use(morgan(':method :url :status :response-time ms'))
@@ -12,10 +14,12 @@ app.use(express.json())
 
 app.use(infoMiddleware.requestLogger)
 
-app.get('/hola', (req, res) => {
-  console.log(req)
-  res.send('hola mundo').status(200)
-})
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./routes/testing')
+  app.use('/api/testing', testingRouter)
+}
+
+app.use('/api/movies', moviesRouter)
 
 app.use(infoMiddleware.unknownEndpoint)
 

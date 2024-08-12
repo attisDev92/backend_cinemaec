@@ -5,12 +5,11 @@ const config = require('../utils/config')
 mongoose.set('strictQuery', false)
 logger.info(`connecting to MongoDB`)
 
-mongoose.connect(config.MONGODB)
+mongoose
+  .connect(config.MONGODB)
   .then(() => {
-    logger.info(`connect to MongoDB ${config.MONGODB}`)
+    logger.info('connect to MongoDB')
   })
-  .error(error => {
+  .catch(error => {
     logger.error('error connecting database', error)
   })
-
-
