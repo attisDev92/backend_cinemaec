@@ -7,6 +7,8 @@ const Movie = require('../models/Movie')
 const { moviesInitialList, newMovieObject } = require('./data_helpers')
 const app = require('../app')
 const { initMovies, getMovies } = require('./movies_test_helpers')
+const { getAdminToken } = require('./admin_test_helpers')
+const Admin = require('../models/Admin')
 
 const api = supertest(app)
 
@@ -61,13 +63,17 @@ describe('GET request with id to api/movies', () => {
 
 describe('POST request to api/movies', () => {
   let initialMovies
+  let token
 
-  beforeEach(async () => {
+  beforeEach( async() => {
+    await Admin.deleteMany({})
     initialMovies = await getMovies()
+    const getToken = await getAdminToken()
+    token = `Bearer ${getToken}`
   })
 
   test('create a new movie', async () => {
-    const response = await api.post('/api/movies').send(newMovieObject)
+    const response = await api.post('/api/movies').set('Authorization', token).send(newMovieObject)
     assert.strictEqual(response.status, 201)
     const moviesAfterCreated = await getMovies()
     assert.strictEqual(moviesAfterCreated.length, initialMovies.length + 1)
@@ -82,7 +88,7 @@ describe('POST request to api/movies', () => {
       title: 'movie',
       time: 70,
     }
-    const response = await api.post('/api/movies').send(invalidMovieObject)
+    const response = await api.post('/api/movies').set('Authorization', token).send(invalidMovieObject)
     assert.strictEqual(response.status, 400)
     const moviesAfterCreated = await getMovies()
     assert.strictEqual(moviesAfterCreated.length, initialMovies.length)

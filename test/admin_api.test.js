@@ -13,12 +13,11 @@ const Admin = require('../models/Admin')
 
 const api = supertest(app)
 
-let initialAdmin
 let initialAdmins
 
 beforeEach(async () => {
   await Admin.deleteMany({})
-  initialAdmin = await postAdmin()
+  
   initialAdmins = await getAllAdmins()
 })
 
@@ -32,7 +31,6 @@ describe('create a new admin on /api/admin', () => {
   test('create new admin', async () => {
     const response = await api.post('/api/admin').send(newAdmin)
     assert.strictEqual(response.status, 201)
-
     const adminsAfter = await getAllAdmins()
     assert.strictEqual(adminsAfter.length, (initialAdmins.length + 1))
 
@@ -42,7 +40,7 @@ describe('create a new admin on /api/admin', () => {
     assert.ok(adminExist, "username doesn't exist")
   })
 
-  test('create user with invalid user data', async () => {
+  test('create admin with invalid user data', async () => {
     const response = await api
       .post('/api/admin')
       .send({ username: 'invalid user' })
@@ -59,10 +57,14 @@ describe('create a new admin on /api/admin', () => {
 })
 
 describe('login on /api/admin', () => {
+  let initialAdmin
+  
+  beforeEach(async() => {
+    initialAdmin = await postAdmin()
+  })
 
   test('login with correct admin data', async () => {
     const response = await api.post('/api/admin/login').send(adminObject)
-    console.log(response.initialAdmin)
     assert.strictEqual(response.status, 200)
     assert.deepEqual(adminObject.username, initialAdmin.username)
   })

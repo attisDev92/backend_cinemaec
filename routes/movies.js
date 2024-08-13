@@ -1,4 +1,5 @@
 const express = require('express')
+const { verifyAdminToken } = require('../middlewares/verifyToken')
 const {
   getAllMovies,
   getMovie,
@@ -9,6 +10,6 @@ const router = express.Router()
 
 router.get('/', getAllMovies)
 router.get('/:id', getMovie)
-router.post('/', createMovie)
+router.post('/', verifyAdminToken, createMovie)
 
 module.exports = router

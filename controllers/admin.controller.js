@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Admin = require('../models/Admin')
-const { SECRET_ADMIN } = require('../utils/config')
+const { SECRETADMIN } = require('../utils/config')
 
 const createAdmin = async (req, res) => {
   const { username, password } = req.body
@@ -38,13 +38,13 @@ const loginAdmin = async (req, res) => {
       id: admin._id,
     }
 
-    const adminToken = jwt.sign(adminForToken, SECRET_ADMIN, {
+    const adminToken = jwt.sign(adminForToken, SECRETADMIN, {
       expiresIn: 1440 * 60,
     })
 
     res.status(200).send({ adminToken, username: admin.username })
   } catch (error) {
-    res.status(500).json({error: 'error al procesar los datos'})
+    res.status(500).json({ error: 'error al procesar los datos' })
   }
 }
 

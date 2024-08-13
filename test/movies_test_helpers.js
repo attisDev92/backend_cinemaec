@@ -1,5 +1,5 @@
 const Movie = require('../models/Movie')
-const { moviesInitialList, newMovie } = require('./data_helpers')
+const { moviesInitialList } = require('./data_helpers')
 
 const initMovies = async () => {
   for (let movie of moviesInitialList) {
