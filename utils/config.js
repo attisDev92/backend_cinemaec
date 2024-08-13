@@ -8,7 +8,10 @@ const MONGODB =
     ? process.env.TEST_MONGODB_URI
     : process.env.MONGODB_URI
 
+const SECRET_ADMIN = process.env.SECRET_ADMIN
+
 module.exports = {
   PORT,
   MONGODB,
+  SECRET_ADMIN,
 }

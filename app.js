@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const infoMiddleware = require('./middlewares/infoRequest.middleware')
 
 const moviesRouter = require('./routes/movies')
+const adminRouter = require('./routes/admin')
 
 require('./database/db')
 
@@ -21,6 +22,7 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 app.use('/api/movies', moviesRouter)
+app.use('/api/admin', adminRouter)
 
 app.use(infoMiddleware.unknownEndpoint)
 
