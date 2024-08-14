@@ -1,4 +1,4 @@
-const { resetDatabase } = require('../controllers/testing.controller')
+const { resetDatabase } = require('../controllers/testingController')
 
 const testingRouter = require('express').Router()
 

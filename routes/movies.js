@@ -4,7 +4,7 @@ const {
   getAllMovies,
   getMovie,
   createMovie,
-} = require('../controllers/movies.controller')
+} = require('../controllers/moviesController')
 
 const router = express.Router()
 

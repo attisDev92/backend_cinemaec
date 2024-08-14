@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-const infoMiddleware = require('./middlewares/infoRequest.middleware')
+const infoMiddleware = require('./middlewares/infoRequest')
 
 const moviesRouter = require('./routes/movies')
 const adminRouter = require('./routes/admin')
