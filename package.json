@@ -15,19 +15,14 @@
   "author": "AttisDev92",
   "license": "ISC",
   "dependencies": {
-    "@microsoft/microsoft-graph-client": "^3.0.7",
-    "axios": "^1.3.1",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.2",
-    "mongoose-unique-validator": "^5.0.1",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.1"
+    "mongoose-unique-validator": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -36,6 +31,7 @@
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.9.0",
+    "morgan": "^1.10.0",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
     "supertest": "^7.0.0"

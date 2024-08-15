@@ -12,7 +12,6 @@ const adminSchema = new Schema({
     type: String,
     required: true,
     minLength: 5,
-    unique: true,
   },
 })
 
