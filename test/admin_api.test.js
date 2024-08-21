@@ -17,7 +17,7 @@ let initialAdmins
 
 beforeEach(async () => {
   await Admin.deleteMany({})
-  
+
   initialAdmins = await getAllAdmins()
 })
 
@@ -31,8 +31,9 @@ describe('create a new admin on /api/admin', () => {
   test('create new admin', async () => {
     const response = await api.post('/api/admin').send(newAdmin)
     assert.strictEqual(response.status, 201)
+
     const adminsAfter = await getAllAdmins()
-    assert.strictEqual(adminsAfter.length, (initialAdmins.length + 1))
+    assert.strictEqual(adminsAfter.length, initialAdmins.length + 1)
 
     const adminExist = adminsAfter.find(
       admin => admin.username === newAdmin.username,
@@ -58,8 +59,8 @@ describe('create a new admin on /api/admin', () => {
 
 describe('login on /api/admin', () => {
   let initialAdmin
-  
-  beforeEach(async() => {
+
+  beforeEach(async () => {
     initialAdmin = await postAdmin()
   })
 

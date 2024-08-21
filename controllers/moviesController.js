@@ -1,4 +1,5 @@
 const Movie = require('../models/Movie')
+const { upload, uploadFiles } = require('../middlewares/uploadFiles')
 
 const getAllMovies = async (req, res) => {
   try {
@@ -22,27 +23,28 @@ const getMovie = async (req, res) => {
   }
 }
 
-const createMovie = async (req, res) => {
-  const newMovie = new Movie({
-    ...req.body,
-    expiration: req.body.expiration || null,
-    stills: req.body.stills || [],
-    subtitles: req.body.subtitles || [],
-    festivals: req.body.festivals || [],
-    awards: req.body.awards || [],
-    availableForREA: req.body.availableForREA || false,
-    territoryLicense: req.body.territoryLicense || [],
-  })
+const createMovie = [
+  upload,
+  uploadFiles,
+  async (req, res) => {
+    const newMovie = new Movie({
+      ...req.body,
+      stills: req.body.stills || [],
+      subtitles: req.body.subtitles || [],
+      festivals: req.body.festivals || [],
+      awards: req.body.awards || [],
+    })
 
-  try {
-    const savedMovie = await newMovie.save()
-    res.status(201).json(savedMovie)
-  } catch (error) {
-    res
-      .status(400)
-      .json({ error: 'Error al crear la película', details: error.message })
-  }
-}
+    try {
+      const savedMovie = await newMovie.save()
+      res.status(201).json(savedMovie)
+    } catch (error) {
+      res
+        .status(400)
+        .json({ error: 'Error al crear la película', details: error.message })
+    }
+  },
+]
 
 module.exports = {
   getAllMovies,

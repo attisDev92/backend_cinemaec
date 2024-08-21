@@ -65,7 +65,7 @@ describe('POST request to api/movies', () => {
   let initialMovies
   let token
 
-  beforeEach( async() => {
+  beforeEach(async () => {
     await Admin.deleteMany({})
     initialMovies = await getMovies()
     const getToken = await getAdminToken()
@@ -73,7 +73,10 @@ describe('POST request to api/movies', () => {
   })
 
   test('create a new movie', async () => {
-    const response = await api.post('/api/movies').set('Authorization', token).send(newMovieObject)
+    const response = await api
+      .post('/api/movies')
+      .set('Authorization', token)
+      .send(newMovieObject)
     assert.strictEqual(response.status, 201)
     const moviesAfterCreated = await getMovies()
     assert.strictEqual(moviesAfterCreated.length, initialMovies.length + 1)
@@ -88,7 +91,10 @@ describe('POST request to api/movies', () => {
       title: 'movie',
       time: 70,
     }
-    const response = await api.post('/api/movies').set('Authorization', token).send(invalidMovieObject)
+    const response = await api
+      .post('/api/movies')
+      .set('Authorization', token)
+      .send(invalidMovieObject)
     assert.strictEqual(response.status, 400)
     const moviesAfterCreated = await getMovies()
     assert.strictEqual(moviesAfterCreated.length, initialMovies.length)

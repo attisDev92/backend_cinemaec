@@ -26,7 +26,7 @@ const getAllAdmins = async () => {
   return await Admin.find({})
 }
 
-const createAdmin = async() => {
+const createAdmin = async () => {
   passwordHash = await bcrypt.hash(newAdmin.password, 10)
   const admin = new Admin({
     username: newAdmin.username,
@@ -35,14 +35,15 @@ const createAdmin = async() => {
   return await admin.save()
 }
 
-const getAdminToken = async() => {
+const getAdminToken = async () => {
   const admin = await createAdmin()
-  const token = jwt.sign({ 
-    username: admin.username,
-    id: admin._id,
-  }, 
-  SECRETADMIN, 
-  { expiresIn: '1h' },
+  const token = jwt.sign(
+    {
+      username: admin.username,
+      id: admin._id,
+    },
+    SECRETADMIN,
+    { expiresIn: '1h' },
   )
 
   return token

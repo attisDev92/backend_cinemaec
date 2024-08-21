@@ -12,14 +12,12 @@ const movieSchema = new Schema({
     minLength: 5,
     required: true,
   },
+  screenPlayers: {
+    type: [String],
+  },
   poster: {
     type: String,
     minLength: 10,
-    unique: true,
-  },
-  time: {
-    type: Number,
-    required: true,
   },
   stills: {
     type: [String],
@@ -29,14 +27,22 @@ const movieSchema = new Schema({
     minLength: 10,
     required: true,
   },
+  sinopsis: {
+    type: String,
+    minLength: 10,
+    require: true,
+  },
   trailer: {
     type: String,
     minLength: 10,
-    unique: true,
   },
   feactureFilm: {
     type: String,
     minLength: 5,
+    required: true,
+  },
+  time: {
+    type: Number,
     required: true,
   },
   genre: {
@@ -68,21 +74,48 @@ const movieSchema = new Schema({
     type: Boolean,
     required: true,
   },
-  expiration: {
-    type: Date,
-  },
   festivals: {
     type: [String],
   },
   awards: {
     type: [String],
   },
-  availableForREA: {
-    type: Boolean,
-    required: true,
+  reaInformation: {
+    type: new Schema({
+      available: {
+        type: Boolean,
+        default: false,
+      },
+      expiration: {
+        type: Date,
+      },
+      territoryLicense: {
+        type: [String],
+      },
+    }),
   },
-  territoryLicense: {
-    type: [String],
+  channels: [
+    {
+      type: new Schema({
+        platform: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      }),
+    },
+  ],
+  contact: {
+    name: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    mail: {
+      type: String,
+    },
   },
   created: {
     type: Date,
