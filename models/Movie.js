@@ -14,13 +14,16 @@ const movieSchema = new Schema({
   },
   screenPlayers: {
     type: [String],
+    default: [],
   },
   poster: {
     type: String,
     minLength: 10,
+    default: '',
   },
   stills: {
     type: [String],
+    default: [],
   },
   storyLine: {
     type: String,
@@ -35,6 +38,7 @@ const movieSchema = new Schema({
   trailer: {
     type: String,
     minLength: 10,
+    default: '',
   },
   feactureFilm: {
     type: String,
@@ -64,6 +68,7 @@ const movieSchema = new Schema({
   },
   subtitles: {
     type: [String],
+    dafault: [],
   },
   target: {
     type: String,
@@ -73,12 +78,15 @@ const movieSchema = new Schema({
   animation: {
     type: Boolean,
     required: true,
+    default: false,
   },
   festivals: {
     type: [String],
+    default: [],
   },
   awards: {
     type: [String],
+    default: [],
   },
   reaInformation: {
     type: new Schema({

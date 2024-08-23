@@ -27,16 +27,49 @@ const createMovie = [
   upload,
   uploadFiles,
   async (req, res) => {
-    const newMovie = new Movie({
-      ...req.body,
-      stills: req.body.stills || [],
-      subtitles: req.body.subtitles || [],
-      festivals: req.body.festivals || [],
-      awards: req.body.awards || [],
-    })
-
     try {
+      const parsedBody = { ...req.body }
+
+      if (parsedBody.screenplayers) {
+        parsedBody.screenplayers = JSON.parse(parsedBody.screenplayers)
+      }
+      if (parsedBody.time) {
+        parsedBody.time = parseInt(parsedBody.time)
+      }
+      if (parsedBody.genre) {
+        parsedBody.genre = JSON.parse(parsedBody.genre)
+      }
+      if (parsedBody.year) {
+        parsedBody.year = parseInt(parsedBody.year)
+      }
+      if (parsedBody.language) {
+        parsedBody.language = JSON.parse(parsedBody.language)
+      }
+      if (parsedBody.subtitles) {
+        parsedBody.subtitles = JSON.parse(parsedBody.subtitles)
+      }
+      parsedBody.animation = parsedBody.animation === 'true' ? true : false
+      if (parsedBody.festivals) {
+        parsedBody.festivals = JSON.parse(parsedBody.festivals)
+      }
+      if (parsedBody.awards) {
+        parsedBody.awards = JSON.parse(parsedBody.awards)
+      }
+      if (parsedBody.reaInformation) {
+        parsedBody.reaInformation = JSON.parse(parsedBody.reaInformation)
+      }
+      if (parsedBody.channels) {
+        parsedBody.channels = JSON.parse(parsedBody.channels)
+      }
+      if (parsedBody.contact) {
+        parsedBody.contact = JSON.parse(parsedBody.contact)
+      }
+
+      console.log(parsedBody)
+
+      const newMovie = new Movie(parsedBody)
       const savedMovie = await newMovie.save()
+
       res.status(201).json(savedMovie)
     } catch (error) {
       res
