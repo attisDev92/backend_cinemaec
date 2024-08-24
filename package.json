@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test node --test",
-    "test:coverage": "NODE_ENV=test c8 node --test",
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
+    "test": "NODE_ENV=test node --test",
+    "test:coverage": "NODE_ENV=test c8 node --test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write"

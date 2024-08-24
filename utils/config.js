@@ -1,12 +1,20 @@
-/* eslint-disable no-undef */
+const { error } = require('./logger')
+
 require('dotenv').config()
 
 const PORT = process.env.PORT
 
-const MONGODB =
-  process.env.NODE_ENV === 'test'
-    ? process.env.TEST_MONGODB_URI
-    : process.env.MONGODB_URI
+let MONGODB
+
+if (process.env.NODE_ENV === 'test') {
+  MONGODB = process.env.TEST_MONGODB_URI
+} else if (process.env.NODE_ENV === 'development') {
+  MONGODB = process.env.DEV_MONGODB_URI
+} else if (process.env.NODE_ENV === 'production') {
+  MONGODB = process.env.MONGODB_URI
+} else {
+  error('NODE_ENV is invalid')
+}
 
 const SECRETADMIN = process.env.SECRET_ADMIN
 

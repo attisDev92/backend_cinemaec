@@ -65,8 +65,6 @@ const createMovie = [
         parsedBody.contact = JSON.parse(parsedBody.contact)
       }
 
-      console.log(parsedBody)
-
       const newMovie = new Movie(parsedBody)
       const savedMovie = await newMovie.save()
 
