@@ -77,8 +77,28 @@ const createMovie = [
   },
 ]
 
+const deleteMovie = async (req, res) => {
+  const id = req.params.id
+
+  try {
+    const movie = await Movie.findById(id)
+    if (!movie) {
+      return res
+        .status(400)
+        .json({ error: 'La película seleccionada no existe' })
+    }
+    await Movie.deleteOne({ _id: id })
+    res.status(202).json(id)
+  } catch (error) {
+    res
+      .status(400)
+      .json({ error: 'No se pudo borrar la película', details: error.message })
+  }
+}
+
 module.exports = {
   getAllMovies,
   getMovie,
   createMovie,
+  deleteMovie,
 }

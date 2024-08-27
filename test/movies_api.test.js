@@ -105,6 +105,36 @@ describe('POST request to api/movies', () => {
   })
 })
 
+describe('Delete a movie', () => {
+  test('delete a movie by correct id', async () => {
+    const movieForDelete = await api
+      .post('/api/movies')
+      .set('Authorization', token)
+      .send(newMovieObject)
+
+    const initialMovies = await getMovies()
+
+    const deletedMovie = await api
+      .delete(`/api/movies/${movieForDelete.id}`)
+      .set('Authorization', token)
+
+    const movieDeletedNotExist = initialMovies.find('')
+
+    assert.strictEqual(movieForDelete.id, deletedMovie.data)
+    assert.equal(movieDeletedNotExist, null)
+    assert.strictEqual(deletedMovie.status, 202)
+  }),
+    test('unvalid id delete', async () => {
+      const initialMovies = await getMovies()
+
+      const deletedMovie = await api
+        .delete(`/api/movies/834623480989`)
+        .set('Authorization', token)
+
+      assert.strictEqual(deletedMovie.status, 400)
+    })
+})
+
 after(async () => {
   await mongoose.connection.close()
 })

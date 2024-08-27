@@ -16,15 +16,6 @@ const movieSchema = new Schema({
     type: [String],
     default: [],
   },
-  poster: {
-    type: String,
-    minLength: 10,
-    default: '',
-  },
-  stills: {
-    type: [String],
-    default: [],
-  },
   storyLine: {
     type: String,
     minLength: 10,
@@ -34,6 +25,15 @@ const movieSchema = new Schema({
     type: String,
     minLength: 10,
     require: true,
+  },
+  poster: {
+    type: String,
+    minLength: 10,
+    default: '',
+  },
+  stills: {
+    type: [String],
+    default: [],
   },
   trailer: {
     type: String,
