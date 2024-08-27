@@ -4,57 +4,135 @@ const mongooseUniqueValidator = require('mongoose-unique-validator')
 const movieSchema = new Schema({
   title: {
     type: String,
-    required: true,
+    required: [true, 'El título es obligatorio'],
+    minLength: 1,
     unique: true,
   },
   director: {
     type: String,
     minLength: 5,
-    required: true,
+    required: [true, 'El nombre del director es obligatorio'],
   },
-  screenPlayers: {
-    type: [String],
-    default: [],
+  productionCompany: {
+    type: String,
+    default: '',
   },
   storyLine: {
     type: String,
-    minLength: 10,
-    required: true,
+    minLength: 40,
+    required: [true, 'Se require un storyline'],
   },
-  sinopsis: {
+  plot: {
     type: String,
-    minLength: 10,
-    require: true,
+    minLength: 100,
+    require: [true, 'Se requiere sinopsis'],
   },
   poster: {
     type: String,
-    minLength: 10,
+    match: /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?$/i,
     default: '',
   },
   stills: {
     type: [String],
+    validate: {
+      validator: value => {
+        const urlRegex = /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?$/i
+        return value.every(still => urlRegex.test(still))
+      },
+      message: 'Todos los elementos del array "stills" deben ser URLs válidas',
+    },
     default: [],
   },
   trailer: {
     type: String,
-    minLength: 10,
+    match: /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?$/i,
     default: '',
   },
-  feactureFilm: {
-    type: String,
-    minLength: 5,
-    required: true,
+  technicalTeam: {
+    type: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        role: {
+          type: String,
+          required: true,
+          enum: [
+            'Guionista',
+            'Productor/a',
+            'Director/a de fotografía',
+            'Director/a de arte',
+            'Sonido',
+            'Montaje',
+            'Postproducción',
+            'Musicalización',
+          ],
+        },
+      },
+    ],
+    validate: {
+      validator: value => {
+        return value.every(
+          member =>
+            Object.keys(member).length === 2 &&
+            'name' in member &&
+            'role' in member,
+        )
+      },
+      message: 'Cada miembro del equipo técnico debe tener un nombre y un rol.',
+    },
+    default: [],
   },
-  time: {
+  cast: {
+    type: [String],
+    default: [],
+  },
+  runTime: {
     type: Number,
-    required: true,
+    min: 1,
+    required: [true, 'Coloque la duración de la obra en minutos'],
   },
   genre: {
+    type: String,
+    enum: ['Ficción', 'Docuemntal'],
+    required: [true, 'Es obligatorio seleccionar un genero'],
+  },
+  sub_genre: {
     type: [String],
+    enum: [
+      'Acción',
+      'Animación',
+      'Aventuras',
+      'Bélico',
+      'Biográfico',
+      'Ciencia Ficción',
+      'Científico',
+      'Comedia',
+      'Deportivo',
+      'Drama',
+      'Educativo',
+      'Etnográfico',
+      'Experimental',
+      'Fantástico',
+      'Histórico',
+      'Investigación Periodística',
+      'Medioambiente',
+      'Musical',
+      'Policial',
+      'Político Social',
+      'Romántico',
+      'Suspenso',
+      'Terror',
+      'Viajes',
+      'Familiar',
+    ],
     required: true,
   },
-  year: {
+  realeseYear: {
     type: Number,
+    min: 1900,
+    max: new Date().getFullYear(),
     required: true,
   },
   country: {
@@ -68,17 +146,20 @@ const movieSchema = new Schema({
   },
   subtitles: {
     type: [String],
-    dafault: [],
+    default: [],
   },
   target: {
     type: String,
     minLength: 3,
+    enum: [
+      'Todo público',
+      'Infantil',
+      '-12 bajo supervisión',
+      '+12 años',
+      '+15 años',
+      '+18 años',
+    ],
     required: true,
-  },
-  animation: {
-    type: Boolean,
-    required: true,
-    default: false,
   },
   festivals: {
     type: [String],
@@ -88,8 +169,12 @@ const movieSchema = new Schema({
     type: [String],
     default: [],
   },
+  funding: {
+    type: [String],
+    default: [],
+  },
   reaInformation: {
-    type: new Schema({
+    type: {
       available: {
         type: Boolean,
         default: false,
@@ -100,30 +185,46 @@ const movieSchema = new Schema({
       territoryLicense: {
         type: [String],
       },
-    }),
+    },
+    default: {
+      available: false,
+    },
   },
-  channels: [
-    {
-      type: new Schema({
+  channels: {
+    type: [
+      {
         platform: {
           type: String,
+          required: true,
         },
         url: {
           type: String,
+          required: true,
         },
-      }),
-    },
-  ],
+      },
+    ],
+    default: [],
+  },
   contact: {
-    name: {
-      type: String,
+    type: {
+      name: {
+        type: String,
+        required: true,
+      },
+      role: {
+        type: String,
+        required: true,
+      },
+      phone: {
+        type: String,
+        required: true,
+      },
+      mail: {
+        type: String,
+        required: true,
+      },
     },
-    phone: {
-      type: String,
-    },
-    mail: {
-      type: String,
-    },
+    default: {},
   },
   created: {
     type: Date,
