@@ -3,17 +3,17 @@ const assert = require('assert')
 const supertest = require('supertest')
 const mongoose = require('mongoose')
 const Movie = require('../models/Movie')
-
+const Admin = require('../models/Admin')
 const { moviesInitialList, newMovieObject } = require('./data_helpers')
 const app = require('../app')
 const { initMovies, getMovies } = require('./movies_test_helpers')
 const { getAdminToken } = require('./admin_test_helpers')
-const Admin = require('../models/Admin')
 
 const api = supertest(app)
 
 beforeEach(async () => {
   await Movie.deleteMany({})
+  await Admin.deleteMany({})
   await initMovies()
 })
 
@@ -106,35 +106,42 @@ describe('POST request to api/movies', () => {
 })
 
 describe('Delete a movie', () => {
-  test('delete a movie by correct id', async () => {
-    const movieForDelete = await api
-      .post('/api/movies')
-      .set('Authorization', token)
-      .send(newMovieObject)
+  let initialMovies
+  let token
 
-    const initialMovies = await getMovies()
+  beforeEach(async () => {
+    initialMovies = await getMovies()
+    const getToken = await getAdminToken()
+    token = `Bearer ${getToken}`
+  })
+
+  test('delete a movie by correct id', async () => {
+    const movieForDelete = initialMovies[0]
 
     const deletedMovie = await api
       .delete(`/api/movies/${movieForDelete.id}`)
       .set('Authorization', token)
 
-    const movieDeletedNotExist = initialMovies.find('')
-
-    assert.strictEqual(movieForDelete.id, deletedMovie.data)
-    assert.equal(movieDeletedNotExist, null)
     assert.strictEqual(deletedMovie.status, 202)
-  }),
-    test('unvalid id delete', async () => {
-      const initialMovies = await getMovies()
 
-      const deletedMovie = await api
-        .delete(`/api/movies/834623480989`)
-        .set('Authorization', token)
+    const moviesAfter = await getMovies()
+    const movieDeletedNotExist = moviesAfter.find(
+      movie => movie._id === movieForDelete._id,
+    )
+    assert.strictEqual(movieDeletedNotExist, undefined)
+  })
 
-      assert.strictEqual(deletedMovie.status, 400)
-    })
+  test('unvalid id delete', async () => {
+    const deletedMovie = await api
+      .delete(`/api/movies/834623480989`)
+      .set('Authorization', token)
+
+    assert.strictEqual(deletedMovie.status, 400)
+  })
 })
 
 after(async () => {
+  await Admin.deleteMany({})
+  await Movie.deleteMany({})
   await mongoose.connection.close()
 })

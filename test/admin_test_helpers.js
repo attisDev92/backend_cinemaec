@@ -9,8 +9,8 @@ const adminObject = {
 }
 
 const newAdmin = {
-  username: 'AdminTest',
-  password: 'passTest',
+  username: 'Admin',
+  password: 'Admin',
 }
 
 const postAdmin = async () => {

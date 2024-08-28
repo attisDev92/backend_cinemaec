@@ -11,18 +11,18 @@ const verifyAdminToken = async (req, res, next) => {
     }
 
     if (!token) {
-      return res.status(401).json({ error: 'token missing' })
+      return res.status(401).json({ error: 'No tiene credenciales' })
     }
 
     const decodedToken = jwt.verify(token, SECRETADMIN)
     if (!decodedToken.id) {
-      return res.status(401).json({ error: 'invalid token' })
+      return res.status(401).json({ error: 'Credenciales invalidas' })
     }
 
     req.userToken = decodedToken
     next()
   } catch (error) {
-    return res.status(401).json({ error: 'invalid token' })
+    return res.status(401).json({ error: 'Credenciales invalidas' })
   }
 }
 

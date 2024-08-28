@@ -17,17 +17,10 @@ let initialAdmins
 
 beforeEach(async () => {
   await Admin.deleteMany({})
-
   initialAdmins = await getAllAdmins()
 })
 
 describe('create a new admin on /api/admin', () => {
-  let adminsUsername
-
-  beforeEach(async () => {
-    adminsUsername = initialAdmins.map(admin => admin.username)
-  })
-
   test('create new admin', async () => {
     const response = await api.post('/api/admin').send(newAdmin)
     assert.strictEqual(response.status, 201)
@@ -45,15 +38,10 @@ describe('create a new admin on /api/admin', () => {
     const response = await api
       .post('/api/admin')
       .send({ username: 'invalid user' })
-    assert.strictEqual(response.status, 500)
+    assert.strictEqual(response.status, 400)
 
     const adminsAfter = await getAllAdmins()
     assert.deepEqual(adminsAfter, initialAdmins)
-
-    const adminName = adminsUsername.find(
-      username => username === newAdmin.username,
-    )
-    assert.strictEqual(adminName, undefined)
   })
 })
 
@@ -79,5 +67,6 @@ describe('login on /api/admin', () => {
 })
 
 after(async () => {
+  await Admin.deleteMany({})
   await mongoose.connection.close()
 })

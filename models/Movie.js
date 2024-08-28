@@ -4,9 +4,9 @@ const mongooseUniqueValidator = require('mongoose-unique-validator')
 const movieSchema = new Schema({
   title: {
     type: String,
-    required: [true, 'El título es obligatorio'],
     minLength: 1,
     unique: true,
+    required: [true, 'El título es obligatorio'],
   },
   director: {
     type: String,
@@ -29,23 +29,14 @@ const movieSchema = new Schema({
   },
   poster: {
     type: String,
-    match: /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?$/i,
     default: '',
   },
   stills: {
     type: [String],
-    validate: {
-      validator: value => {
-        const urlRegex = /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?$/i
-        return value.every(still => urlRegex.test(still))
-      },
-      message: 'Todos los elementos del array "stills" deben ser URLs válidas',
-    },
     default: [],
   },
   trailer: {
     type: String,
-    match: /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?$/i,
     default: '',
   },
   technicalTeam: {
@@ -71,17 +62,6 @@ const movieSchema = new Schema({
         },
       },
     ],
-    validate: {
-      validator: value => {
-        return value.every(
-          member =>
-            Object.keys(member).length === 2 &&
-            'name' in member &&
-            'role' in member,
-        )
-      },
-      message: 'Cada miembro del equipo técnico debe tener un nombre y un rol.',
-    },
     default: [],
   },
   cast: {
@@ -95,7 +75,7 @@ const movieSchema = new Schema({
   },
   genre: {
     type: String,
-    enum: ['Ficción', 'Docuemntal'],
+    enum: ['Ficción', 'Documental'],
     required: [true, 'Es obligatorio seleccionar un genero'],
   },
   sub_genre: {
@@ -127,7 +107,7 @@ const movieSchema = new Schema({
       'Viajes',
       'Familiar',
     ],
-    required: true,
+    required: [true, 'Es obligatorio registrar almenos un subgenero'],
   },
   realeseYear: {
     type: Number,
@@ -209,19 +189,15 @@ const movieSchema = new Schema({
     type: {
       name: {
         type: String,
-        required: true,
       },
       role: {
         type: String,
-        required: true,
       },
       phone: {
         type: String,
-        required: true,
       },
       mail: {
         type: String,
-        required: true,
       },
     },
     default: {},
@@ -229,6 +205,11 @@ const movieSchema = new Schema({
   created: {
     type: Date,
     default: new Date(),
+  },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'Admin',
+    required: true,
   },
 })
 

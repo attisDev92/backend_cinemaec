@@ -15,7 +15,7 @@ const createAdmin = async (req, res) => {
     const savedAdmin = await admin.save()
     res.status(201).json(savedAdmin)
   } catch (error) {
-    res.status(500).json({ error: 'error al guardar los datos' })
+    res.status(500).json({ error: 'error al crear el usuario los datos' })
   }
 }
 
@@ -39,7 +39,7 @@ const loginAdmin = async (req, res) => {
     }
 
     const adminToken = jwt.sign(adminForToken, SECRETADMIN, {
-      expiresIn: 1440 * 60,
+      expiresIn: 3 * 24 * 60 * 60,
     })
 
     res.status(200).send({ adminToken, username: admin.username })
