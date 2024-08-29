@@ -73,6 +73,25 @@ const movieSchema = new Schema({
     min: 1,
     required: [true, 'Coloque la duración de la obra en minutos'],
   },
+  realeseYear: {
+    type: Number,
+    min: 1900,
+    max: new Date().getFullYear(),
+    required: true,
+  },
+  country: {
+    type: String,
+    minLength: 5,
+    required: true,
+  },
+  language: {
+    type: [String],
+    required: true,
+  },
+  subtitles: {
+    type: [String],
+    default: [],
+  },
   genre: {
     type: String,
     enum: ['Ficción', 'Documental'],
@@ -108,25 +127,6 @@ const movieSchema = new Schema({
       'Familiar',
     ],
     required: [true, 'Es obligatorio registrar almenos un subgenero'],
-  },
-  realeseYear: {
-    type: Number,
-    min: 1900,
-    max: new Date().getFullYear(),
-    required: true,
-  },
-  country: {
-    type: String,
-    minLength: 5,
-    required: true,
-  },
-  language: {
-    type: [String],
-    required: true,
-  },
-  subtitles: {
-    type: [String],
-    default: [],
   },
   target: {
     type: String,
@@ -164,6 +164,7 @@ const movieSchema = new Schema({
       },
       territoryLicense: {
         type: [String],
+        emun: ['Nacional', 'Internacional', 'Retina Latina'],
       },
     },
     default: {
@@ -173,7 +174,7 @@ const movieSchema = new Schema({
   channels: {
     type: [
       {
-        platform: {
+        plataform: {
           type: String,
           required: true,
         },
