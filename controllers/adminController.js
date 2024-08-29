@@ -38,9 +38,7 @@ const loginAdmin = async (req, res) => {
       id: admin._id,
     }
 
-    const adminToken = jwt.sign(adminForToken, SECRETADMIN, {
-      expiresIn: 3 * 24 * 60 * 60,
-    })
+    const adminToken = jwt.sign(adminForToken, SECRETADMIN)
 
     res.status(200).send({ adminToken, username: admin.username })
   } catch (error) {
