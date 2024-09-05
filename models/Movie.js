@@ -28,15 +28,26 @@ const movieSchema = new Schema({
     require: [true, 'Se requiere sinopsis'],
   },
   poster: {
-    type: String,
-    default: '',
+    type: {
+      url: {
+        type: String,
+      },
+    },
+    default: {},
   },
   stills: {
-    type: [String],
+    type: [
+      {
+        url: {
+          type: String,
+        },
+      },
+    ],
     default: [],
   },
   trailer: {
     type: String,
+    unique: '',
     default: '',
   },
   technicalTeam: {
@@ -222,6 +233,6 @@ movieSchema.set('toJSON', {
   },
 })
 
-movieSchema.plugin(mongooseUniqueValidator)
+// movieSchema.plugin(mongooseUniqueValidator)
 
 module.exports = model('Movie', movieSchema)
