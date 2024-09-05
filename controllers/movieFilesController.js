@@ -69,14 +69,66 @@ const updateMovieFiles = async (req, res) => {
 }
 
 const deleteMovieFiles = async (req, res) => {
-  //se busca el objeto movie
-  //se busca el id de file en el movie poster
-  //si se encuentra se elimina de firebase
-  //se elimina de la base de datos
-  //si no se encuentra se busca en poster
-  //se elimina de firebase
-  //se elimina de la base de datos
-  //se envia guarda el modelo y se elimina
+  try {
+    const { movieId } = req.body
+    const fileId = req.params.id
+
+    const movie = await Movie.findById(movieId)
+    if (!movie) {
+      res.status(404).json({ error: 'La película no existe' })
+    }
+
+    let fileDeleted = false
+
+    if (movie.poster && movie.poster._id.toString() === fileId) {
+      try {
+        const posterPath = movie.poster.url.split('/o/')[1].split('?')[0]
+        const posterRef = ref(storage, decodeURIComponent(posterPath))
+        await deleteObject(posterRef)
+        movie.poster.url = ''
+        fileDeleted = true
+      } catch (error) {
+        console.error('Error al eliminar el póster de Firebase:', error.message)
+        return res
+          .status(500)
+          .json({ error: 'Error al eliminar el póster de Firebase' })
+      }
+    }
+
+    const stillIndex = movie.stills.findIndex(
+      still => still._id.toString() === fileId,
+    )
+    if (stillIndex !== -1) {
+      try {
+        const stillPath = movie.stills[stillIndex].url
+          .split('/o/')[1]
+          .split('?')[0]
+        const stillRef = ref(storage, decodeURIComponent(stillPath))
+        await deleteObject(stillRef)
+        movie.stills.splice(stillIndex, 1)
+        fileDeleted = true
+      } catch (error) {
+        console.error('Error al eliminar el still de Firebase:', error.message)
+        return res
+          .status(500)
+          .json({ error: 'Error al eliminar el still de Firebase' })
+      }
+    }
+
+    if (!fileDeleted) {
+      return res
+        .status(404)
+        .json({ error: 'Archivo no encontrado en la película' })
+    }
+
+    await movie.save()
+    res.status(200).json({ message: 'Archivo eliminado correctamente', movie })
+  } catch (error) {
+    console.error('Error al eliminar el archivo:', error)
+    res
+      .status(500)
+      .json({ error: 'Error al eliminar el archivo', details: error.message })
+  }
 }
 
 module.exports = {
