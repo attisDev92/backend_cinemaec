@@ -69,6 +69,7 @@ const updateMovieFiles = async (req, res) => {
 }
 
 const deleteMovieFiles = async (req, res) => {
+  console.log(req.body)
   try {
     const { movieId } = req.body
     const fileId = req.params.id
@@ -80,7 +81,11 @@ const deleteMovieFiles = async (req, res) => {
 
     let fileDeleted = false
 
-    if (movie.poster && movie.poster._id.toString() === fileId) {
+    if (
+      movie.poster.url &&
+      movie.poster.url.trim() !== '' &&
+      movie.poster._id.toString() === fileId
+    ) {
       try {
         const posterPath = movie.poster.url.split('/o/')[1].split('?')[0]
         const posterRef = ref(storage, decodeURIComponent(posterPath))
