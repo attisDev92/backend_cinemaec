@@ -8,6 +8,7 @@ const {
 } = require('firebase/storage')
 const path = require('path')
 const Movie = require('../models/Movie')
+const { firebaseStorage } = require('../utils/config')
 
 const firebaseConfig = require('../utils/firebaseConfig')
 const app = initializeApp(firebaseConfig)
@@ -24,7 +25,7 @@ const updateMovieFiles = async (req, res) => {
 
     const file = req.files[0]
     const fileExtension = path.extname(file.originalname)
-    const fileName = `cinemaec/${movie.title.replace(/ /g, '_')}/${file.fieldname}_${Date.now()}${fileExtension}`
+    const fileName = `${firebaseStorage}/${movie.title.replace(/ /g, '_')}/${file.fieldname}_${Date.now()}${fileExtension}`
     const storageRef = ref(storage, fileName)
 
     if (file.fieldname === 'poster') {
