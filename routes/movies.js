@@ -17,7 +17,7 @@ router.get('/', getAllMovies)
 router.get('/:id', getMovie)
 router.post('/', verifyAdminToken, createMovie)
 router.put('/files', verifyAdminToken, uploadTempFiles.any(), updateMovieFiles)
-router.delete('/files/:id', verifyAdminToken, deleteMovieFiles)
+router.put('/files/remove', verifyAdminToken, deleteMovieFiles)
 router.delete('/:id', verifyAdminToken, deleteMovie)
 
 module.exports = router

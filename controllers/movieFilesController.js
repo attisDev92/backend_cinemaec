@@ -69,10 +69,8 @@ const updateMovieFiles = async (req, res) => {
 }
 
 const deleteMovieFiles = async (req, res) => {
-  console.log(req.body)
   try {
-    const { movieId } = req.body
-    const fileId = req.params.id
+    const { movieId, fileId } = req.body
 
     const movie = await Movie.findById(movieId)
     if (!movie) {
