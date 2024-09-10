@@ -5,13 +5,25 @@ const infoMiddleware = require('./middlewares/infoRequest')
 
 const moviesRouter = require('./routes/movies')
 const adminRouter = require('./routes/admin')
+const allowedOrigins = ['https://admin.cinemaec.com']
 
 require('./database/db')
 
 const app = express()
 
 app.use(morgan(':method :url :status :response-time ms'))
-app.use(cors())
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true)
+      } else {
+        callback(new Error('No permitido por CORS'))
+      }
+    },
+    credentials: true,
+  }),
+)
 app.use(express.static('build'))
 app.use(express.json())
 app.use(infoMiddleware.requestLogger)
