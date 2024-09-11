@@ -2,10 +2,10 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const infoMiddleware = require('./middlewares/infoRequest')
+const { allowedOrigins } = require('./utils/config')
 
 const moviesRouter = require('./routes/movies')
 const adminRouter = require('./routes/admin')
-const allowedOrigins = ['https://admin.cinemaec.com']
 
 require('./database/db')
 
