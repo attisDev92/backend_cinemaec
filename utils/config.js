@@ -10,7 +10,7 @@ let allowedOrigins
 if (process.env.NODE_ENV === 'production') {
   MONGODB = process.env.MONGODB_URI
   firebaseStorage = 'cinemaec'
-  allowedOrigins = ['https://admin.cinemaec.com']
+  allowedOrigins = ['https://admin.cinemaec.com', 'https://cinemaec.com']
 } else if (process.env.NODE_ENV === 'development') {
   MONGODB = process.env.DEV_MONGODB_URI
   firebaseStorage = 'cinemaec-test'
