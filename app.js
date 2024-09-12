@@ -3,6 +3,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const infoMiddleware = require('./middlewares/infoRequest')
 const { allowedOrigins } = require('./utils/config')
+console.log(allowedOrigins)
 
 const moviesRouter = require('./routes/movies')
 const adminRouter = require('./routes/admin')

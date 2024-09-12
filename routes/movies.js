@@ -5,6 +5,7 @@ const {
   getAllMovies,
   getMovie,
   createMovie,
+  editMovie,
   deleteMovie,
 } = require('../controllers/moviesController')
 const {
@@ -16,6 +17,7 @@ const router = express.Router()
 router.get('/', getAllMovies)
 router.get('/:id', getMovie)
 router.post('/', verifyAdminToken, createMovie)
+router.put('/:id', verifyAdminToken, editMovie)
 router.put('/files', verifyAdminToken, uploadTempFiles.any(), updateMovieFiles)
 router.put('/files/remove', verifyAdminToken, deleteMovieFiles)
 router.delete('/:id', verifyAdminToken, deleteMovie)

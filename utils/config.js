@@ -14,11 +14,11 @@ if (process.env.NODE_ENV === 'production') {
 } else if (process.env.NODE_ENV === 'development') {
   MONGODB = process.env.DEV_MONGODB_URI
   firebaseStorage = 'cinemaec-test'
-  allowedOrigins = ['http://localhost']
+  allowedOrigins = ['http://localhost:5173']
 } else if (process.env.NODE_ENV === 'test') {
   MONGODB = process.env.TEST_MONGODB_URI
   firebaseStorage = 'cinemaec-test'
-  allowedOrigins = ['http://localhost']
+  allowedOrigins = ['http://localhost:5173']
 } else {
   error('NODE_ENV is invalid')
 }
