@@ -15,6 +15,7 @@ const app = initializeApp(firebaseConfig)
 const storage = getStorage(app)
 
 const updateMovieFiles = async (req, res) => {
+  console.log('se llamo este endpoint')
   try {
     const { movieId } = req.body
     const movie = await Movie.findById(movieId)
