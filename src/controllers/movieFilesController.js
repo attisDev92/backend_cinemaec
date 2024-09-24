@@ -1,21 +1,20 @@
-const { initializeApp } = require('firebase/app')
-const {
+import { initializeApp } from 'firebase/app'
+import {
   getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
   deleteObject,
-} = require('firebase/storage')
-const path = require('path')
-const Movie = require('../models/Movie')
-const { firebaseStorage } = require('../utils/config')
+} from 'firebase/storage'
+import path from 'path'
+import Movie from '../models/Movie.js'
+import { firebaseStorage } from '../config/config.js'
 
-const firebaseConfig = require('../utils/firebaseConfig')
+import firebaseConfig from '../config/firebaseConfig.js'
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app)
 
-const updateMovieFiles = async (req, res) => {
-  console.log('se llamo este endpoint')
+export const updateMovieFiles = async (req, res) => {
   try {
     const { movieId } = req.body
     const movie = await Movie.findById(movieId)
@@ -70,7 +69,7 @@ const updateMovieFiles = async (req, res) => {
   }
 }
 
-const deleteMovieFiles = async (req, res) => {
+export const deleteMovieFiles = async (req, res) => {
   try {
     const { movieId, fileId } = req.body
 
@@ -134,9 +133,4 @@ const deleteMovieFiles = async (req, res) => {
       .status(500)
       .json({ error: 'Error al eliminar el archivo', details: error.message })
   }
-}
-
-module.exports = {
-  updateMovieFiles,
-  deleteMovieFiles,
 }

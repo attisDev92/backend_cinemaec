@@ -1,8 +1,7 @@
-const Movie = require('../models/Movie')
-const Admin = require('../models/Admin')
-const mongoose = require('mongoose')
+import Movie from '../models/Movie.js'
+import Admin from '../models/Admin.js'
 
-const getAllMovies = async (req, res) => {
+export const getAllMovies = async (_req, res) => {
   try {
     const movies = await Movie.find({})
     res.json(movies)
@@ -11,7 +10,7 @@ const getAllMovies = async (req, res) => {
   }
 }
 
-const getMovie = async (req, res) => {
+export const getMovie = async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id)
     if (movie) {
@@ -24,7 +23,7 @@ const getMovie = async (req, res) => {
   }
 }
 
-const createMovie = async (req, res) => {
+export const createMovie = async (req, res) => {
   const { body, userToken } = req
 
   try {
@@ -44,7 +43,7 @@ const createMovie = async (req, res) => {
   }
 }
 
-const editMovie = async (req, res) => {
+export const editMovie = async (req, res) => {
   const { body, params } = req
 
   try {
@@ -66,7 +65,7 @@ const editMovie = async (req, res) => {
   }
 }
 
-const deleteMovie = async (req, res) => {
+export const deleteMovie = async (req, res) => {
   const id = req.params.id
 
   try {
@@ -84,12 +83,4 @@ const deleteMovie = async (req, res) => {
       details: error.message,
     })
   }
-}
-
-module.exports = {
-  getAllMovies,
-  getMovie,
-  createMovie,
-  editMovie,
-  deleteMovie,
 }

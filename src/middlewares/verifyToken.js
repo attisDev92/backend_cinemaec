@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken')
-const { SECRETADMIN } = require('../utils/config')
+import jwt from 'jsonwebtoken'
+import { SECRETADMIN } from '../config/config.js'
 
 const verifyAdminToken = async (req, res, next) => {
   const authorization = req.get('authorization')
@@ -26,6 +26,4 @@ const verifyAdminToken = async (req, res, next) => {
   }
 }
 
-module.exports = {
-  verifyAdminToken,
-}
+export default verifyAdminToken

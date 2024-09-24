@@ -1,11 +1,13 @@
-const { error } = require('./logger')
-require('dotenv').config()
+import { error } from '../utils/logger.js'
+import dotenv from 'dotenv'
 
-const PORT = process.env.PORT
+dotenv.config()
 
-let MONGODB
-let firebaseStorage
-let allowedOrigins
+export const PORT = process.env.PORT
+
+export let MONGODB
+export let firebaseStorage
+export let allowedOrigins
 
 if (process.env.NODE_ENV === 'production') {
   MONGODB = process.env.MONGODB_URI
@@ -23,12 +25,4 @@ if (process.env.NODE_ENV === 'production') {
   error('NODE_ENV is invalid')
 }
 
-const SECRETADMIN = process.env.SECRET_ADMIN
-
-module.exports = {
-  PORT,
-  MONGODB,
-  SECRETADMIN,
-  firebaseStorage,
-  allowedOrigins,
-}
+export const SECRETADMIN = process.env.SECRET_ADMIN

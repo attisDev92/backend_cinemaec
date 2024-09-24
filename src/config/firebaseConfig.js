@@ -1,4 +1,6 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -10,4 +12,4 @@ const firebaseConfig = {
   measurementId: process.env.MEASUREMENT_ID,
 }
 
-module.exports = firebaseConfig
+export default firebaseConfig

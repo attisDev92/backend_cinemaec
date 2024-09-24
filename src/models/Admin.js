@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose')
-const mongooseUniqueValidator = require('mongoose-unique-validator')
+import { Schema, model } from 'mongoose'
+import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 const adminSchema = new Schema({
   username: {
@@ -25,4 +25,4 @@ adminSchema.set('toJSON', {
 
 adminSchema.plugin(mongooseUniqueValidator)
 
-module.exports = model('Admin', adminSchema)
+export default model('Admin', adminSchema)

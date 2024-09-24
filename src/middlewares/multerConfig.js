@@ -1,13 +1,11 @@
-const multer = require('multer')
+import multer from 'multer'
 
 const uploadTempFiles = multer({
   storage: multer.memoryStorage(),
-  fileFilter: (req, file, cb) => {
+  fileFilter: (_req, _file, cb) => {
     cb(null, true)
   },
   limits: { fileSize: 5 * 1024 * 1024 },
 })
 
-module.exports = {
-  uploadTempFiles,
-}
+export default uploadTempFiles

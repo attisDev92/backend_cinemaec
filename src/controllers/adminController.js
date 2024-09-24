@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const Admin = require('../models/Admin')
-const { SECRETADMIN } = require('../utils/config')
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import Admin from '../models/Admin.js'
+import { SECRETADMIN } from '../config/config.js'
 
-const createAdmin = async (req, res) => {
+export const createAdmin = async (req, res) => {
   const { username, password } = req.body
 
   try {
@@ -19,7 +19,7 @@ const createAdmin = async (req, res) => {
   }
 }
 
-const loginAdmin = async (req, res) => {
+export const loginAdmin = async (req, res) => {
   const { username, password } = req.body
 
   try {
@@ -44,9 +44,4 @@ const loginAdmin = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'error al procesar los datos' })
   }
-}
-
-module.exports = {
-  createAdmin,
-  loginAdmin,
 }

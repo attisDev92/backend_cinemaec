@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose')
-const mongooseUniqueValidator = require('mongoose-unique-validator')
+import { Schema, model } from 'mongoose'
+import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 const movieSchema = new Schema({
   title: {
@@ -91,7 +91,7 @@ const movieSchema = new Schema({
     required: true,
   },
   country: {
-    type: String,
+    type: [String],
     minLength: 5,
     required: true,
   },
@@ -233,6 +233,6 @@ movieSchema.set('toJSON', {
   },
 })
 
-// movieSchema.plugin(mongooseUniqueValidator)
+movieSchema.plugin(mongooseUniqueValidator)
 
-module.exports = model('Movie', movieSchema)
+export default model('Movie', movieSchema)
