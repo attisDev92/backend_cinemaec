@@ -38,7 +38,7 @@ export const createMovie = async (req, res) => {
     res.status(201).json(savedMovie)
   } catch (error) {
     res
-      .status(500)
+      .status(400)
       .json({ error: 'Error al crear la película', details: error.message })
   }
 }

@@ -3,6 +3,7 @@ import { SECRETADMIN } from '../config/config.js'
 
 const verifyAdminToken = async (req, res, next) => {
   const authorization = req.get('authorization')
+
   try {
     let token = null
 
@@ -11,7 +12,7 @@ const verifyAdminToken = async (req, res, next) => {
     }
 
     if (!token) {
-      return res.status(401).json({ error: 'No tiene credenciales' })
+      return res.status(401).json({ error: 'Credenciales invalidas' })
     }
 
     const decodedToken = jwt.verify(token, SECRETADMIN)

@@ -7,12 +7,14 @@ import {
   postAdmin,
 } from './helpers/admin_test_helpers'
 import Admin from '../src/models/Admin'
+import Movie from '../src/models/Movie'
 
 const api = supertest(app)
 
 describe('API ADMIN tests', () => {
   beforeEach(async () => {
     await Admin.deleteMany({})
+    await Movie.deleteMany({})
   })
 
   test('post new admin', async () => {
@@ -69,5 +71,10 @@ describe('API ADMIN tests', () => {
 
     expect(response.body.error).toMatch('usuario o contraseña incorrectos')
     expect(response.body.adminToken).not.toBeDefined()
+  })
+
+  afterEach(async () => {
+    await Admin.deleteMany({})
+    await Movie.deleteMany({})
   })
 })

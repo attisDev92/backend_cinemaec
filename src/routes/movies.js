@@ -17,10 +17,14 @@ const router = express.Router()
 
 router.put('/files/remove', verifyAdminToken, deleteMovieFiles)
 router.put('/files', verifyAdminToken, uploadTempFiles.any(), updateMovieFiles)
+
 router.get('/', getAllMovies)
 router.get('/:id', getMovie)
+
 router.post('/', verifyAdminToken, createMovie)
+
 router.put('/:id', verifyAdminToken, editMovie)
+
 router.delete('/:id', verifyAdminToken, deleteMovie)
 
 export default router
