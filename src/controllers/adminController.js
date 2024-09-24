@@ -6,6 +6,10 @@ import { SECRETADMIN } from '../config/config.js'
 export const createAdmin = async (req, res) => {
   const { username, password } = req.body
 
+  if (password.length < 5) {
+    return res.status(400).json({ error: 'datos invalidos' })
+  }
+
   try {
     const passwordHash = await bcrypt.hash(password, 10)
     const admin = new Admin({
@@ -30,7 +34,7 @@ export const loginAdmin = async (req, res) => {
       : await bcrypt.compare(password, admin.password)
 
     if (!(admin && passwordCorrect)) {
-      return res.status(401).json({ error: 'datos invalidos' })
+      return res.status(401).json({ error: 'usuario o contraseña incorrectos' })
     }
 
     const adminForToken = {

@@ -1,25 +1,35 @@
-// import Admin from '../../models/Admin'
-// import bcrypt from 'bcrypt'
-// import jwt from 'jsonwebtoken'
-// import { SECRETADMIN } from '../utils/config'
+import Admin from '../../src/models/Admin'
+import bcrypt from 'bcrypt'
+//import jwt from 'jsonwebtoken'
+//import { SECRETADMIN } from '../utils/config'
+
+export const newAdmin = {
+  username: 'Admin',
+  password: 'Admin',
+}
+
+export const invalidAdmin = {
+  username: 'wrong Admin',
+  password: '',
+}
+
+export const postAdmin = async admin => {
+  const passwordHash = await bcrypt.hash(admin.password, 10)
+  const initialAdmin = new Admin({
+    ...admin,
+    password: passwordHash,
+  })
+  return initialAdmin.save()
+}
+
+export const getAllAdmins = async () => {
+  const admins = await Admin.find({})
+  return admins
+}
 
 // const adminObject = {
 //   username: 'AdminRea',
 //   password: 'REA_pass.',
-// }
-
-// const newAdmin = {
-//   username: 'Admin',
-//   password: 'Admin',
-// }
-
-// const postAdmin = async () => {
-//   const passwordHash = await bcrypt.hash(adminObject.password, 10)
-//   const initialAdmin = new Admin({
-//     ...adminObject,
-//     password: passwordHash,
-//   })
-//   return initialAdmin.save()
 // }
 
 // const getAllAdmins = async () => {
