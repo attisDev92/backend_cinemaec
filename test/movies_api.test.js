@@ -91,6 +91,124 @@ describe('API MOVIES tests', () => {
     expect(movieCreatedExist).not.toBeDefined()
   })
 
+  test('edit movie', async () => {
+    const initialMovies = await fetchInitMovies()
+    const adminToken = await getAdminToken()
+    const movieToUpdate = initialMovies[0]
+
+    const response = await api
+      .put(`/api/movies/${movieToUpdate._id.toString()}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ title: 'Película editada' })
+      .expect(200)
+
+    expect(response.body.title).toMatch('Película editada')
+    expect(response.body.id).toBe(movieToUpdate._id.toString())
+  })
+
+  test('edit movie withou credentials', async () => {
+    const initialMovies = await fetchInitMovies()
+    const movieToUpdate = initialMovies[0]
+
+    const response = await api
+      .put(`/api/movies/${movieToUpdate._id.toString()}`)
+      .send({ title: 'Película editada' })
+      .expect(401)
+
+    expect(response.body.error).toMatch('Credenciales invalidas')
+
+    const moviesAfterEdit = await getMovies()
+    expect(moviesAfterEdit[0].title).toBe(movieToUpdate.title)
+  })
+
+  test('edit movie with invalid data', async () => {
+    const initialMovies = await fetchInitMovies()
+    const adminToken = await getAdminToken()
+    const movieToUpdate = initialMovies[0]
+
+    const response = await api
+      .put(`/api/movies/${movieToUpdate._id.toString()}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ title: '' })
+      .expect(400)
+
+    expect(response.body.error).toMatch('Error al editar la película')
+    expect(response.body.title).not.toBeDefined()
+
+    const moviesAfterEdit = await getMovies()
+    expect(movieToUpdate.title).toBe(moviesAfterEdit[0].title)
+  })
+
+  test('edit movie that not exist', async () => {
+    const initialMovies = await fetchInitMovies()
+    const adminToken = await getAdminToken()
+    const invalidId = '12875304956749564'
+
+    const response = await api
+      .put(`/api/movies/${invalidId}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ title: 'Película editada' })
+      .expect(400)
+
+    expect(response.body.error).toMatch('Error al editar la película')
+
+    const moviesAfterEdit = await getMovies()
+    expect(moviesAfterEdit[0].title).toBe(initialMovies[0].title)
+  })
+
+  test('delete a movie', async () => {
+    const initialMovies = await fetchInitMovies()
+    const adminToken = await getAdminToken()
+    const movieToDelete = initialMovies[0]
+
+    const response = await api
+      .delete(`/api/movies/${movieToDelete._id.toString()}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send()
+      .expect(202)
+
+    expect(response.body).toBe(movieToDelete.id)
+
+    const moviesAfterDelte = await getMovies()
+    const movieDeletedExist = moviesAfterDelte.find(
+      movie => movie.id === response.body,
+    )
+
+    expect(movieDeletedExist).not.toBeDefined()
+  })
+
+  test('delete a movie without credentials', async () => {
+    const initialMovies = await fetchInitMovies()
+    const movieToDelete = initialMovies[0]
+
+    const response = await api
+      .delete(`/api/movies/${movieToDelete._id.toString()}`)
+      .send()
+      .expect(401)
+
+    expect(response.body.error).toMatch('Credenciales invalidas')
+
+    const moviesAfterDelte = await getMovies()
+    expect(moviesAfterDelte.length).toBe(initialMovies.length)
+  })
+
+  test('delete a movie with invalid data', async () => {
+    const initialMovies = await fetchInitMovies()
+    const adminToken = await getAdminToken()
+    const invalidId = '823479287349823'
+
+    const response = await api
+      .delete(`/api/movies/${invalidId}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send()
+      .expect(400)
+    console.log(response.body)
+    expect(response.body.error).toMatch('No se pudo eliminar la película')
+
+    const moviesAfterDelte = await getMovies()
+    expect(moviesAfterDelte.length).toBe(initialMovies.length)
+  })
+
   afterEach(async () => {
     await Admin.deleteMany({})
     await Movie.deleteMany({})

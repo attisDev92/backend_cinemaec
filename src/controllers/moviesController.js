@@ -49,18 +49,12 @@ export const editMovie = async (req, res) => {
   try {
     const movie = await Movie.findById(params.id)
 
-    if (!movie) {
-      return res
-        .status(404)
-        .json({ error: 'La película que intenta editar no existe' })
-    }
-
     movie.set(body)
     const updatedMovie = await movie.save()
     res.status(200).json(updatedMovie)
   } catch (error) {
     res
-      .status(500)
+      .status(400)
       .json({ error: 'Error al editar la película', details: error.message })
   }
 }
@@ -70,11 +64,6 @@ export const deleteMovie = async (req, res) => {
 
   try {
     const movie = await Movie.findById(id)
-    if (!movie) {
-      return res
-        .status(400)
-        .json({ error: 'La película seleccionada no existe' })
-    }
     await Movie.deleteOne({ _id: id })
     res.status(202).json(id)
   } catch (error) {
