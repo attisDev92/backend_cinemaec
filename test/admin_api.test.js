@@ -1,6 +1,7 @@
 import supertest from 'supertest'
 import app from '../src/app'
 import {
+  getAdminToken,
   getAllAdmins,
   invalidAdmin,
   newAdmin,
@@ -71,6 +72,31 @@ describe('API ADMIN tests', () => {
 
     expect(response.body.error).toMatch('usuario o contraseña incorrectos')
     expect(response.body.adminToken).not.toBeDefined()
+  })
+
+  test('user get token valid', async () => {
+    const admin = await postAdmin(newAdmin)
+    const adminToken = await getAdminToken()
+
+    const response = await api
+      .get('/api/admin/login')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send()
+      .expect(202)
+
+    expect(response.body.username).toBe(admin.username)
+  })
+
+  test('user get token invalid', async () => {
+    const invalidToken = '2342384798739842534534'
+
+    const response = await api
+      .get('/api/admin/login')
+      .set('Authorization', `Bearer ${invalidToken}`)
+      .send()
+      .expect(401)
+
+    expect(response.body.error).toMatch('Credenciales invalidas')
   })
 
   afterEach(async () => {

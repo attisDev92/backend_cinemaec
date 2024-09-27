@@ -42,10 +42,20 @@ export const loginAdmin = async (req, res) => {
       id: admin._id,
     }
 
-    const adminToken = jwt.sign(adminForToken, SECRETADMIN)
+    const adminToken = jwt.sign(adminForToken, SECRETADMIN, {
+      expiresIn: 24 * 60 * 60,
+    })
 
     res.status(200).send({ adminToken, username: admin.username })
   } catch (error) {
     res.status(500).json({ error: 'error al procesar los datos' })
+  }
+}
+
+export const verifyLogin = async (req, res) => {
+  try {
+    res.status(202).json(req.userToken)
+  } catch (error) {
+    res.status(401).json({ error: 'Token invalido' })
   }
 }
